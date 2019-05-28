@@ -1,4 +1,4 @@
-const knex = require('knex');
+const knex = require('../db/knex');
 const moment = require('moment');
 const uuidv4 = require('uuid');
 
@@ -7,5 +7,5 @@ module.exports = {
         knex('alignments')
             .select()
             .then(alignments => res.json(alignments));
-    },
+    }
 }
