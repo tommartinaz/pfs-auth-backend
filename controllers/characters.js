@@ -15,6 +15,7 @@ module.exports = {
             .then(characters => res.json(characters[0]));
     },
     createCharacter(req, res) {
+        console.log(req.body);
         knex('characters')
             .insert({ ...req.body, id: uuidv4() }, '*')
             .then(characters => res.status(201).json(characters[0]));
