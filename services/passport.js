@@ -1,4 +1,5 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt-nodejs');
 const knex = require('../db/knex');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -12,13 +13,14 @@ const localOptions = {
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
     knex('players')
         .where('email', email)
-        .then(players => {
-            const [ player ] = players
-            if(player.password !== password) {
-                return done(null, false);
-            } else {
-                return done(null, player.id);
+        .asCallback((err, user) => {
+            if(user.length < 1) {
+                return done(null, false, {message: 'User not found'});
             }
+            if(!bcrypt.compareSync(password, user[0].password)) {
+                return done(null, false, { message: 'Invalid credentials' });
+            }
+            return done(null, user[0])
         })
         .catch(err => done(err));
 })
