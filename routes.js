@@ -6,6 +6,7 @@ const characters = require('./controllers/characters');
 const races = require('./controllers/races');
 const alignments = require('./controllers/alignments');
 const classes = require('./controllers/classes');
+const scenarios = require('./controllers/scenarios');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 const requireSignin = passport.authenticate('local', { session: false });
@@ -33,4 +34,11 @@ module.exports = app => {
     app.get('/api/alignments', alignments.fetchAlignments);
     app.get('/api/classes', classes.fetchClasses);
     app.get('/api/races', races.fetchRaces);
+
+    // SCENARIOS
+    app.get('/api/scenarios', scenarios.fetchScenarios);
+    app.post('/api/scenarios', scenarios.createScenario);
+    app.get('/api/scenarios/:scenarioId', scenarios.fetchScenario);
+    app.patch('/api/scenarios/:scenarioId', scenarios.editScenario);
+    app.delete('/api/scenarios/:scenarioId', scenarios.deleteScenario);
 }
