@@ -19,30 +19,30 @@ module.exports = {
             .then(players => {
                 if(players.length) {
                     return res.status(422).send({ error: 'Email is already in use' });
-                } else {
-                    bcrypt.genSalt(10, (err, salt) => {
+                }
+            }).asCallback(() => {
+                bcrypt.genSalt(10, (err, salt) => {
+                    if(err) {
+                        return next(err);
+                    }
+
+                    bcrypt.hash(req.body.password, salt, null, (err, hash) => {
                         if(err) {
                             return next(err);
                         }
-
-                        bcrypt.hash(req.body.password, salt, null, (err, hash) => {
-                            if(err) {
-                                return next(err);
-                            }
-                            // player = { ...req.body, password: hash, id: uuidv4() };
-                            knex('players')
-                                .insert({ ...req.body, password: hash, id: uuidv4() }, '*')
-                                .then(
-                                    // players => {
-                                    //     res.status(201).json({ id: players[0].id, token: tokenForUser(players[0]) })
-                                    // }
-                                    () => res.redirect('/')
-                                );
-                            next();
-                        });
+                        knex('players')
+                            .insert({ ...req.body, password: hash, id: uuidv4() }, '*')
+                            .then(
+                                players => {
+                                    const [ player ] = players
+                                    res.status(201).json({ id: player.id, token: tokenForUser(player) });
+                                    return null;
+                                }
+                            );
+                        // next();
                     });
-                }
-            });
+                });
+            })
     },
     signin(req, res, next) {
         console.log(req.user)
