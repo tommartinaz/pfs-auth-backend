@@ -8,6 +8,12 @@ exports.up = knex => {
         t.uuid('class_id');
         t.uuid('race_id');
         t.uuid('alignment_id');
+        t.integer('str');
+        t.integer('dex');
+        t.integer('con');
+        t.integer('int');
+        t.integer('wis');
+        t.integer('cha');
         t.timestamps(true, true);
     });
 };
