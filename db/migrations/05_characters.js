@@ -14,6 +14,7 @@ exports.up = knex => {
         t.integer('int');
         t.integer('wis');
         t.integer('cha');
+        t.boolean('retired');
         t.timestamps(true, true);
     });
 };
