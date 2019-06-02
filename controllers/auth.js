@@ -45,7 +45,6 @@ module.exports = {
             })
     },
     signin(req, res, next) {
-        console.log(req.user)
         res.send({ id: req.user.id, token: tokenForUser(req.body) })
     }
 }
