@@ -8,6 +8,7 @@ exports.up = knex => {
         t.integer('low_level');
         t.integer('high_level');
         t.text('description');
+        t.boolean('evergreen');
         t.timestamps(true, true);
     })
 };
